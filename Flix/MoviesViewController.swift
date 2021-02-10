@@ -6,14 +6,24 @@
 //
 
 import UIKit
+import AlamofireImage
 
-class MoviesViewController: UIViewController {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    
+    
+    
+    @IBOutlet weak var tableView: UITableView!
+    
     //here created an array of dictionaries
     var movies = [[String:Any]] ()  // Key: string , value: can be any type of variables
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //******************* step 3
+        tableView.dataSource = self
+        tableView.delegate = self
+        
         // Do any additional setup after loading the view.
         //this below chunk of codes download the array of movies and store in the variable movies
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
@@ -29,6 +39,9 @@ class MoviesViewController: UIViewController {
             
             //casting?
             self.movies = dataDictionary ["results"] as! [[String:Any]]
+            
+            self.tableView.reloadData()
+            
                 //print the dataDictionary
             print(dataDictionary)
             //we want the list of movies to show up instead of the results, we need to store it in the view controller so we can access later to show in that table view
@@ -43,7 +56,35 @@ class MoviesViewController: UIViewController {
         }
         task.resume()
     }
+    //******************
+    //asking for number of rows
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return movies.count
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell" ) as! MovieCell
+        
+        let movie = movies[indexPath.row]
+        let title = movie["title"] as! String
+        //check API for the string name, this one is overview
+        let synopsis = movie["overview"] as! String
+        
+        //cell.textLabel!.text = title
+        cell.titleLabel.text = title
+        cell.synopsisLabel.text = synopsis
+        
+        let baseUrl = "https://image.tmdb.org/t/p/w185"
+        let posterPath = movie["poster_path"] as! String
+        let posterUrl = URL (string: baseUrl + posterPath)!
+        
+        cell.posterView.af_setImage(withURL: posterUrl)
+        
+        
+        return cell
+    }
 
     /*
     // MARK: - Navigation
