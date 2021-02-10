@@ -29,7 +29,7 @@ Flix is an app that allows users to browse movies from the [The Movie Database A
 ### Notes
 Describe any challenges encountered while building the app.
 
- After I add pod "AlamofireImage" I was not able to run: pod install, terminal gave me error saying " no platform was specified" . I resolved this( with the help of TA) by reinstalling using these commands: (The given installation commands did not work for my xcode,my xcode version is 12.4
+ After I add pod "AlamofireImage" I was not able to run: pod install, terminal gave me error saying " no platform was specified" . I resolved this( with the help of TA) by reinstalling using these commands: (The given installation commands did not work for my xcode,my xcode version is 12.4)
  
  sudo arch -x86_64 gem install ffi
  
